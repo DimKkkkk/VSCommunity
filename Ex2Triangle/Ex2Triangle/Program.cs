@@ -1,42 +1,46 @@
 ﻿// Показать треугольник Паскаля. Сделать вывод в виде равнобедренного треугольника
 
 
-int row = 128;
-int[,] triangle = new int[row, row];
-const int cellWidth = 1;
+int row = 128; // значение меняем для количества строк
+int[,] triangle = new int[row, row]; // двумерный массив для треугольника
+const int cellWidth = 1; // значение меняем сколько символов будет для вывода элемента треугольника, когда значения
+                         // наезжают друг на друга
 
-void FillTriangle()
+void FillTriangle()  //метод, который заполняет треугольник.
 {
-    for (int i = 0; i < row; i++)
+    for (int i = 0; i < row; i++) // 1 цикл пробегает по 1 столбику и заполняет единицами.
+        //Соответственно, i элемент тоже заполняется 1
     {
         triangle[i, 0] = 1;
         triangle[i, i] = 1;
     }
 
-    for (int i = 2; i < row; i++)
+    for (int i = 2; i < row; i++) //Начиная со 2 строки, мы заполняем треугольник Паскаля,
+                                  //так как он должен быть заполнен
     {
         for (int j = 1; j <= i; j++)
         {
             triangle[i, j] =
-                triangle[i - 1, j - 1] + triangle[i - 1, j];
+                triangle[i - 1, j - 1] + triangle[i - 1, j]; // То есть сумма текущего элемента будет равна сумме элемента,
+                                                             // который стоит над ним и элемента, который выше и левее
         }
     }
 }
 
-void PrintTriangle()
+void PrintTriangle() // метод печати треугольника
 {
     for (int i = 0; i < row; i++)
     {
         for (int j = 0; j < row; j++)
         {
-            if (triangle[i, j] != 0)
-                Console.Write($"{triangle[i, j],cellWidth}");
+            if (triangle[i, j] != 0) //Всё, что не 0, в треугольнике Паскаля нет нулевых элементов.Мы будем печатать.
+               Console.Write($"{triangle[i, j],cellWidth}");
         }
         Console.WriteLine();
     }
 }
 
-void Magic()
+void Magic() // доп метод для печати равнобедренного треугольника
 {
     int col = cellWidth * row;
     for (int i = 0; i < row; i++)
@@ -44,8 +48,10 @@ void Magic()
         for (int j = 0; j <= i; j++)
         {
             Console.SetCursorPosition(col, i + 1);
-            //if (triangle[i, j] != 0) Console.Write($"{triangle[i, j],cellWidth}");
-            if (triangle[i, j] % 2 != 0/* "без%2" != 0*/) Console.WriteLine("*");
+            //if (triangle[i, j] != 0) Console.Write($"{triangle[i, j],cellWidth}"); //Это при помощи цифр, задача — сделать отступ такого
+            //количества свободных ячеек, которое необходимо, чтобы треугольник был равнобедренным.
+            if (triangle[i, j] % 2 != 0/* "без%2" != 0*/) Console.WriteLine("*"); // а это вывод на печать при помощи звёздочек, только нечётные элементы и будет треугольники в треугольнике.
+                                                                                  // , если убрать %2, то будет выводить сплошной треугольник.
             col += cellWidth * 2;
         }
 
@@ -57,6 +63,6 @@ void Magic()
 
 Console.ReadLine();
 FillTriangle();
-//PrintTriangle();
+//PrintTriangle();  // закомментировать, когда запускаем печать равнобедренного треугольника
 Console.ReadLine();
 Magic();
